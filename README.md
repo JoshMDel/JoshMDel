@@ -1,0 +1,5 @@
+- 👋 Hi, I’m @JoshMDel
+- 👀 I’m interested in front end web development
+- 🌱 I’m currently learning js & python
+- 💞️ I’m looking to collaborate and just learn more on web development
+- 📫 How to reach me is right here on the profile
