@@ -1,4 +1,4 @@
-# Salon Prize Wheel
+# Hair By Mimmie Prize Wheel
 
 A live, on-screen prize wheel for social media giveaways. Open `index.html` in any modern browser (double-click it). No install needed.
 
@@ -12,3 +12,6 @@ A live, on-screen prize wheel for social media giveaways. Open `index.html` in a
 4. The winner pops up with the date, time and number of entries. That makes a good screenshot for your announcement post.
 
 The winner is picked with the browser's cryptographic random number generator (`crypto.getRandomValues`), so every slot has exactly the same chance. Names and winners are saved in the browser, so a page refresh won't lose them.
+
+## Branding
+Styled to match hairbymimmie.co.za (cream, coral #EF4056, ink #241C1A; Playfair Display, Poppins, Dancing Script). The built-in logo was cropped from the website at low resolution; use **Draw settings → Logo → Use the original logo file** to swap in the sharp original.
