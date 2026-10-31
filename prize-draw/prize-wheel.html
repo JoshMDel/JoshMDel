@@ -259,9 +259,9 @@ body:not(.present) .topbar .exit-present { display: none; }
       </label>
       <label class="field" for="durInput">Spin length
         <select id="durInput">
-          <option value="6">Short · 6 seconds</option>
-          <option value="10" selected>Dramatic · 10 seconds</option>
-          <option value="15">Extra suspense · 15 seconds</option>
+          <option value="15" selected>Standard · 15 seconds</option>
+          <option value="20">Dramatic · 20 seconds</option>
+          <option value="30">Extra suspense · 30 seconds</option>
         </select>
       </label>
     </section>
@@ -499,8 +499,8 @@ body:not(.present) .topbar .exit-present { display: none; }
     const targetMod = ((-targetLocal % TAU) + TAU) % TAU;
     const curMod = ((rotation % TAU) + TAU) % TAU;
     let delta = targetMod - curMod; if (delta < 0) delta += TAU;
-    const dur = reduceMotion ? 1.5 : +$("durInput").value;
-    const turns = reduceMotion ? 1 : Math.round(dur * 0.9) + 3;
+    const dur = Math.max(15, +$("durInput").value || 15);   // never shorter than 15 seconds
+    const turns = reduceMotion ? 3 : Math.min(22, Math.round(dur * 0.9) + 3);
     const start = rotation, total = delta + turns * TAU;
     const t0 = performance.now();
     const ease = (t) => 1 - Math.pow(1 - t, 4);
