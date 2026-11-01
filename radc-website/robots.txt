@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /tools/
+
+# AI search & answer engines are welcome
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://www.radc.co.za/sitemap.xml
