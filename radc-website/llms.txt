@@ -53,12 +53,14 @@
 - Full body respray: from R13 500
 
 ## Areas served
-- [Oudtshoorn](https://www.radc.co.za/): home base
-- [George](https://www.radc.co.za/areas/george/): George, Blanco, Wilderness, Pacaltsdorp, Herold's Bay (about 55 km from Oudtshoorn)
-- [Mossel Bay](https://www.radc.co.za/areas/mossel-bay/): Mossel Bay, Hartenbos, Great Brak River, KwaNonqaba, Dana Bay (about 85 km from Oudtshoorn)
-- [Knysna & Plettenberg Bay](https://www.radc.co.za/areas/knysna-plettenberg-bay/): Knysna, Sedgefield, Plettenberg Bay, Brenton-on-Sea, Keurboomstrand (about 120–150 km from Oudtshoorn)
-- [The Klein Karoo](https://www.radc.co.za/areas/klein-karoo/): De Rust, Dysselsdorp, Calitzdorp, Ladismith, Uniondale, Van Wyksdorp (25–100 km from Oudtshoorn)
-- [The Central Karoo](https://www.radc.co.za/areas/central-karoo/): Prince Albert, Beaufort West, Laingsburg, Klaarstroom, Leeu-Gamka (about 75–230 km from Oudtshoorn)
+- Oudtshoorn (home base)
+- Oudtshoorn & Bongolethu
+- George & Wilderness
+- Mossel Bay & Hartenbos
+- Knysna & Plettenberg Bay
+- De Rust, Dysselsdorp & Calitzdorp
+- Ladismith & Uniondale
+- Prince Albert & Beaufort West
 
 ## Pages
 - [Full price list](https://www.radc.co.za/prices/)

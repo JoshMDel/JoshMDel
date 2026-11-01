@@ -6,7 +6,7 @@ Static, SEO-focused website for Ryall's Auto Detailing Centre, 27 Heunis St, Col
 - `/` – Home page, targeting Oudtshoorn car detailing searches
 - `/services/` plus 5 service pages (ceramic coating, paint correction, valets & washes, headlight restoration, dents/scratches/resprays)
 - `/prices/` – full catalogue price list (OfferCatalog schema)
-- `/areas/` plus 5 area pages (George, Mossel Bay, Knysna & Plett, Klein Karoo, Central Karoo)
+- Areas served are listed as plain text on the home page and in the footer (plus `areaServed` schema)
 - `/about/`, `/contact/` (form → pre-filled WhatsApp message), `404.html`
 - `sitemap.xml`, `robots.txt`, `llms.txt`, `site.webmanifest`
 
