@@ -7,7 +7,7 @@ and site.webmanifest into the radc-website folder, ready for any static host.
 
 Edit the BUSINESS dict below to update NAP details, then rebuild.
 """
-import json, os, html
+import json, os, html, re
 from datetime import date
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -44,6 +44,8 @@ BUSINESS = {
 B = BUSINESS
 WA_LINK = f"https://wa.me/{B['wa']}?text=" + "Hi%20RADC%2C%20I%27d%20like%20a%20quote%20for%20my%20car."
 TODAY = date.today().isoformat()
+# Preview builds (e.g. GitHub Pages) are kept out of search indexes: RADC_PREVIEW=1 python3 tools/build.py
+PREVIEW = os.environ.get("RADC_PREVIEW") == "1"
 BIZ_ID = B["site"] + "/#business"
 
 # ---------------------------------------------------------------------------
@@ -321,7 +323,7 @@ def render(path, title, description, body, schema_extra=None, crumbs=None, prior
     graph += schema_extra or []
     ld = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False, separators=(",", ":"))
     canonical = B["site"] + path
-    robots = "noindex, follow" if noindex else "index, follow, max-image-preview:large, max-snippet:-1"
+    robots = "noindex, nofollow" if PREVIEW else ("noindex, follow" if noindex else "index, follow, max-image-preview:large, max-snippet:-1")
     page = f'''<!doctype html>
 <html lang="en-ZA">
 <head>
@@ -364,6 +366,7 @@ def render(path, title, description, body, schema_extra=None, crumbs=None, prior
 </body>
 </html>
 '''
+    page = relativize(page, path)
     if path == "/404.html":
         out_dir, fname = ROOT, "404.html"
     else:
@@ -373,6 +376,16 @@ def render(path, title, description, body, schema_extra=None, crumbs=None, prior
         f.write(page)
     if not noindex:
         PAGES.append((path, priority))
+
+def relativize(page, path):
+    """Rewrite root-relative URLs to page-relative ones so the site works on any
+    host, including sub-path previews such as username.github.io/repo/."""
+    depth = 0 if path in ("/", "/404.html") else len(path.strip("/").split("/"))
+    prefix = "../" * depth
+    page = re.sub(r'href="/([^"]*)"', lambda m: f'href="{(prefix + m.group(1)) or "./"}"', page)
+    page = re.sub(r'src="/', f'src="{prefix}', page)
+    page = re.sub(r'(["\s,])/assets/', lambda m: f'{m.group(1)}{prefix}assets/', page)
+    return page
 
 def page_hero(crumbs, eyebrow, h1, lead, ctas=True):
     btns = f'<div class="btn-row">{btn_wa("WhatsApp for a quote")}{btn_call()}</div>' if ctas else ""
@@ -990,7 +1003,10 @@ def write(name, content):
 def build_support():
     urls = "".join(f"  <url><loc>{B['site']}{p}</loc><lastmod>{TODAY}</lastmod><priority>{pr}</priority></url>\n" for p, pr in PAGES)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
-    write("robots.txt", f"User-agent: *\nAllow: /\nDisallow: /tools/\n\n# AI search & answer engines are welcome\nUser-agent: GPTBot\nAllow: /\nUser-agent: OAI-SearchBot\nAllow: /\nUser-agent: ClaudeBot\nAllow: /\nUser-agent: PerplexityBot\nAllow: /\nUser-agent: Google-Extended\nAllow: /\n\nSitemap: {B['site']}/sitemap.xml\n")
+    if PREVIEW:
+        write("robots.txt", "# Preview build - not for indexing\nUser-agent: *\nDisallow: /\n")
+    else:
+      write("robots.txt", f"User-agent: *\nAllow: /\nDisallow: /tools/\n\n# AI search & answer engines are welcome\nUser-agent: GPTBot\nAllow: /\nUser-agent: OAI-SearchBot\nAllow: /\nUser-agent: ClaudeBot\nAllow: /\nUser-agent: PerplexityBot\nAllow: /\nUser-agent: Google-Extended\nAllow: /\n\nSitemap: {B['site']}/sitemap.xml\n")
     price_lines = "\n".join(f"- {n}: from {rand(p)}" for k in PRICES for n, _, p in PRICES[k])
     svc_lines = "\n".join(f"- [{s['nav']}]({B['site']}/services/{s['slug']}/): {s['teaser']}" for s in SERVICES)
     area_lines = "\n".join(f"- [{a['name'][0].upper() + a['name'][1:]}]({B['site']}/areas/{a['slug']}/): {', '.join(a['places'])} ({a['dist']} from Oudtshoorn)" for a in AREAS)
@@ -1025,10 +1041,10 @@ def build_support():
 - [Contact & directions]({B['site']}/contact/)
 """)
     write("site.webmanifest", json.dumps({
-        "name": B["name"], "short_name": "RADC", "start_url": "/", "display": "standalone",
+        "name": B["name"], "short_name": "RADC", "start_url": "./", "display": "standalone",
         "background_color": "#06080d", "theme_color": "#06080d",
-        "icons": [{"src": "/assets/img/radc-logo-192.png", "sizes": "192x192", "type": "image/png"},
-                  {"src": "/assets/img/radc-logo-512.png", "sizes": "512x512", "type": "image/png"}]}, indent=2))
+        "icons": [{"src": "assets/img/radc-logo-192.png", "sizes": "192x192", "type": "image/png"},
+                  {"src": "assets/img/radc-logo-512.png", "sizes": "512x512", "type": "image/png"}]}, indent=2))
 
 if __name__ == "__main__":
     build_home(); build_services(); build_prices(); build_areas(); build_about(); build_contact(); build_404()

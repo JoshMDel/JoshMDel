@@ -10,6 +10,11 @@ Static, SEO-focused website for Ryall's Auto Detailing Centre, 27 Heunis St, Col
 - `/about/`, `/contact/` (form → pre-filled WhatsApp message), `404.html`
 - `sitemap.xml`, `robots.txt`, `llms.txt`, `site.webmanifest`
 
+## Client preview (GitHub Pages)
+`.github/workflows/radc-preview.yml` builds a **noindex** preview (`RADC_PREVIEW=1`) and publishes it to
+https://joshmdel.github.io/JoshMDel/ on every push that touches `radc-website/`.
+One-time setup: repo **Settings → Pages → Source: GitHub Actions**.
+
 ## Editing
 All business details (NAP, domain, prices, copy) live in `tools/build.py`. Edit, then rebuild:
 

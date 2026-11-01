@@ -1,0 +1,46 @@
+# Publishes the RADC website as a client preview on GitHub Pages.
+# The preview build is noindex + robots "Disallow: /" so it never competes
+# with the client's real domain in Google.
+name: Deploy RADC preview to GitHub Pages
+
+on:
+  push:
+    branches: [main, claude/oudtshoorn-detailer-website-9yhrlh]
+    paths: ["radc-website/**", ".github/workflows/radc-preview.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build preview (noindex)
+        run: RADC_PREVIEW=1 python3 radc-website/tools/build.py
+      - name: Remove build tooling from the published files
+        run: rm -rf radc-website/tools
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: radc-website
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
