@@ -156,26 +156,19 @@ SERVICES = [
      "from": 200, "teaser": "Scratch and faded-paint removal, minor dent repairs, rim repairs, bumper alignment and full resprays."},
 ]
 
-AREAS = [
-    {"slug": "george", "name": "George", "region": "Garden Route",
-     "places": ["George", "Blanco", "Wilderness", "Pacaltsdorp", "Herold's Bay"],
-     "dist": "about 55 km", "time": "roughly 50–60 minutes", "route": "the N12 over the Outeniqua Pass"},
-    {"slug": "mossel-bay", "name": "Mossel Bay", "region": "Garden Route",
-     "places": ["Mossel Bay", "Hartenbos", "Great Brak River", "KwaNonqaba", "Dana Bay"],
-     "dist": "about 85 km", "time": "roughly 1 hour", "route": "the R328 over the Robinson Pass"},
-    {"slug": "knysna-plettenberg-bay", "name": "Knysna & Plettenberg Bay", "region": "Garden Route",
-     "places": ["Knysna", "Sedgefield", "Plettenberg Bay", "Brenton-on-Sea", "Keurboomstrand"],
-     "dist": "about 120–150 km", "time": "roughly 1 h 45 – 2 hours", "route": "the N12 to George and the N2 east"},
-    {"slug": "klein-karoo", "name": "the Klein Karoo", "region": "Klein Karoo",
-     "places": ["De Rust", "Dysselsdorp", "Calitzdorp", "Ladismith", "Uniondale", "Van Wyksdorp"],
-     "dist": "25–100 km", "time": "20 minutes to about 1 h 15", "route": "the R62 and N12"},
-    {"slug": "central-karoo", "name": "the Central Karoo", "region": "Central Karoo",
-     "places": ["Prince Albert", "Beaufort West", "Laingsburg", "Klaarstroom", "Leeu-Gamka"],
-     "dist": "about 75–230 km", "time": "roughly 1 h 15 – 2 h 45", "route": "Meiringspoort (N12) or the Swartberg Pass"},
+# Areas served, shown as plain text (no dedicated area pages)
+AREA_TEXT = [
+    "Oudtshoorn & Bongolethu",
+    "George & Wilderness",
+    "Mossel Bay & Hartenbos",
+    "Knysna & Plettenberg Bay",
+    "De Rust, Dysselsdorp & Calitzdorp",
+    "Ladismith & Uniondale",
+    "Prince Albert & Beaufort West",
 ]
 
 NAV = [("/", "Home"), ("/services/", "Services"), ("/prices/", "Prices"),
-       ("/areas/", "Areas"), ("/about/", "About"), ("/contact/", "Contact")]
+       ("/about/", "About"), ("/contact/", "Contact")]
 
 PAGES = []  # (path, priority) for sitemap
 
@@ -283,7 +276,7 @@ def header(path):
 
 def footer():
     svc = "".join(f'<li><a href="/services/{s["slug"]}/">{s["nav"]}</a></li>' for s in SERVICES)
-    areas = "".join(f'<li><a href="/areas/{a["slug"]}/">Detailing for {a["name"].replace("the ", "")}</a></li>' for a in AREAS)
+    areas = "".join(f'<li>{esc(t)}</li>' for t in AREA_TEXT)
     social = f'<li><a href="{B["tiktok"]}" rel="noopener" target="_blank">TikTok @ryall.wagenaar</a></li>'
     if B["facebook"]:
         social += f'<li><a href="{B["facebook"]}" rel="noopener" target="_blank">Facebook</a></li>'
@@ -298,7 +291,7 @@ def footer():
       <p class="small" style="margin-top:12px">{B["hours_text"]}</p>
     </div>
     <div><h3>Services</h3><ul>{svc}<li><a href="/prices/">Full price list</a></li></ul></div>
-    <div><h3>Areas we serve</h3><ul><li><a href="/">Oudtshoorn car detailing</a></li>{areas}</ul></div>
+    <div><h3>Areas we serve</h3><ul>{areas}</ul></div>
     <div><h3>RADC</h3><ul><li><a href="/about/">About us</a></li><li><a href="/contact/">Contact &amp; directions</a></li>
       <li><a href="{B["maps"]}" rel="noopener" target="_blank">Google reviews ({B["rating"]}★)</a></li>{social}</ul></div>
   </div>
@@ -435,7 +428,7 @@ def build_home():
         ("How do I book?",
          f"The quickest way is WhatsApp on {B['phone_display']}. Send your vehicle make and model, a couple of photos and the service you're interested in, and we'll confirm a price and date."),
         ("I live in George, Mossel Bay or the Karoo. Is it worth the drive?",
-         "Many of our services, like paint correction and ceramic coating, are once-off investments that last months or years, so a single trip to Oudtshoorn is well worth it. See our <a href=\"/areas/\">areas we serve</a> page for routes and planning tips."),
+         "Many of our services, like paint correction and ceramic coating, are once-off investments that last months or years, so a single trip to Oudtshoorn is well worth it. We serve drivers from George, Mossel Bay, Knysna, Plettenberg Bay, De Rust, Calitzdorp, Ladismith, Prince Albert and Beaufort West."),
         ("Can you fix yellow, cloudy headlights?",
          "Yes. Headlight restoration (from R250) sands away the oxidised layer, polishes the lens clear and protects it. If there is haze or moisture inside the lamp, our headlight repair (from R200) cleans them from the inside."),
     ]
@@ -497,14 +490,8 @@ def build_home():
     <h2>Oudtshoorn, the Klein Karoo &amp; the Garden Route</h2>
     <p>Our centre is in Oudtshoorn, the heart of the Klein Karoo — within an hour of George and Mossel Bay and an easy drive from De Rust, Calitzdorp, Dysselsdorp and Prince Albert.</p>
     <ul class="area-list">
-      <li><a href="/">Oudtshoorn &amp; Bongolethu</a></li>
-      <li><a href="/areas/george/">George &amp; Wilderness</a></li>
-      <li><a href="/areas/mossel-bay/">Mossel Bay &amp; Hartenbos</a></li>
-      <li><a href="/areas/knysna-plettenberg-bay/">Knysna &amp; Plett</a></li>
-      <li><a href="/areas/klein-karoo/">De Rust, Calitzdorp, Ladismith</a></li>
-      <li><a href="/areas/central-karoo/">Prince Albert &amp; Beaufort West</a></li>
+      {"".join(f"<li>{esc(t)}</li>" for t in AREA_TEXT)}
     </ul>
-    <a class="btn btn-ghost" href="/areas/">All areas →</a>
   </div>
 </div></section>
 
@@ -749,7 +736,7 @@ def build_services():
 </div></section>
 <section class="block alt"><div class="wrap">{faq_html(c["faqs"])}</div></section>
 <section class="block"><div class="wrap"><div class="section-head"><h2>Related services</h2></div><div class="grid g4">{service_cards(exclude=s["slug"])}</div>
-<p style="margin-top:28px" class="muted">Driving in from out of town? See our guides for <a href="/areas/george/">George</a>, <a href="/areas/mossel-bay/">Mossel Bay</a>, <a href="/areas/knysna-plettenberg-bay/">Knysna &amp; Plett</a>, the <a href="/areas/klein-karoo/">Klein Karoo</a> and the <a href="/areas/central-karoo/">Central Karoo</a>.</p></div></section>
+<p style="margin-top:28px" class="muted">We serve drivers from Oudtshoorn, the Klein Karoo, the Garden Route (George, Mossel Bay, Knysna, Plettenberg Bay) and the Central Karoo (Prince Albert, Beaufort West).</p></div></section>
 {cta_band()}'''
         svc_schema = {"@type": "Service", "@id": B["site"] + path + "#service",
                       "name": strip_tags(html.unescape(c["h1"])), "serviceType": s["nav"],
@@ -800,118 +787,6 @@ def build_prices():
     render(path, "Car Detailing Prices Oudtshoorn 2026 | Full RADC Price List",
            "Full RADC price list: wash & vacuum R130, full valet R1 000, polishing from R1 000, ceramic coating packages from R1 299.99, headlight restoration R250 & more.",
            body, [offer_catalog("RADC car detailing price list", all_rows) | {"provider": {"@id": BIZ_ID}}], crumbs, priority="0.9")
-
-# ---------------------------------------------------------------------------
-# AREAS
-# ---------------------------------------------------------------------------
-AREA_CONTENT = {
-"george": {
-  "title": "Car Detailing near George | Ceramic Coating & Polishing | RADC",
-  "desc": "Detailing for George, Wilderness & Blanco drivers at RADC Oudtshoorn — ceramic coating, paint correction, valets & headlight restoration. ~55 km over the Outeniqua Pass.",
-  "intro": "George is the Garden Route's biggest town, and plenty of George drivers make the scenic trip over the Outeniqua Pass to have their cars detailed at RADC in Oudtshoorn.",
-  "local": "George's frequent rain and humidity mean water spots and road film build up quickly, while the N2 and N12 throw up tar and grime. Cars that commute daily on the N2 also pick up stone-chip and swirl damage from regular washing. A <a href=\"/services/paint-correction-polishing/\">machine polish</a> followed by a <a href=\"/services/ceramic-coating/\">ceramic coating</a> makes wet-weather washing far easier — water beads and sheets off instead of drying into spots.",
-  "plan": "Leave George on the N12 and enjoy the Outeniqua Pass — you'll be in Oudtshoorn in under an hour. Drop your car off in the morning and, if you have a lift, spend the day in town: the Cango Caves, ostrich farms and Baron van Reede Street's restaurants are all close by.",
-  "recommend": ["2-Step polish + 12-month-plus ceramic", "Full valet before selling", "Headlight restoration for N2 night commutes"],
-  "faq": [("How far is RADC from George?", "RADC in Oudtshoorn is about 55 km from George via the N12 and Outeniqua Pass — roughly 50 to 60 minutes' drive."),
-          ("Why drive from George to Oudtshoorn for detailing?", "For once-off, high-value services like paint correction and ceramic coating, a single trip gives months to years of protection, with clear, published prices.")],
-},
-"mossel-bay": {
-  "title": "Car Detailing near Mossel Bay | Ceramic & Polishing | RADC",
-  "desc": "Mossel Bay, Hartenbos & Great Brak drivers: protect your paint from salt air with ceramic coating, polishing & valets at RADC Oudtshoorn — about 1 hour via Robinson Pass.",
-  "intro": "Mossel Bay sits right on the ocean — wonderful for weekends, tough on paint. RADC helps Mossel Bay, Hartenbos and Great Brak River drivers fight salt and sun damage.",
-  "local": "Salt-laden sea air settles on paint, chrome and rims, and once it bonds it accelerates oxidation and corrosion. Combine that with the reflected glare of beach days and paint dulls fast. A <a href=\"/services/car-valet-wash/\">decon wash and clay bar</a> removes bonded salt and fallout, and a <a href=\"/services/ceramic-coating/\">ceramic coating</a> stops it bonding again so a simple rinse keeps the car clean.",
-  "plan": "Take the R328 over the Robinson Pass — about an hour of scenic driving to Oudtshoorn. It's an easy round trip for a drop-off and collection on the same day.",
-  "recommend": ["Decon wash & clay bar (R217)", "1-Step or 2-Step polish + 5-year ceramic", "Rim repairs for kerb rash"],
-  "faq": [("How far is RADC from Mossel Bay?", "About 85 km via the R328 Robinson Pass — roughly an hour's drive."),
-          ("Does ceramic coating help with sea air?", "Yes. A coating creates a slick barrier that keeps salt and fallout from bonding to the clear coat, making it much easier to wash off. Regular rinsing is still important.")],
-},
-"knysna-plettenberg-bay": {
-  "title": "Car Detailing for Knysna & Plettenberg Bay | RADC Oudtshoorn",
-  "desc": "Knysna, Sedgefield & Plett drivers: book a ceramic coating, paint correction or full valet at RADC in Oudtshoorn. Worth the drive for long-lasting protection.",
-  "intro": "From Knysna and Sedgefield to Plettenberg Bay, coastal Garden Route cars deal with salt air, forest sap and lots of holiday kilometres. RADC's Oudtshoorn centre is a worthwhile day trip for serious paint care.",
-  "local": "Tree sap and bird droppings under the Knysna forests can etch clear coat within days in the sun, and coastal humidity keeps grime on the paint. Holiday-season traffic, gravel roads to the beaches and trailer towing all take their toll. Book a <a href=\"/services/paint-correction-polishing/\">2- or 3-step polish</a> to remove etching, then a <a href=\"/services/ceramic-coating/\">5-year ceramic coating</a> so the next season's contamination washes off.",
-  "plan": "From Knysna take the N2 to George and the N12 over the Outeniqua Pass (about 1 h 45). From Plett, allow about 2 hours. Combine your drop-off with a Klein Karoo day out — or ask us on WhatsApp about the best timing for out-of-town bookings.",
-  "recommend": ["3-Step polish + 5-year ceramic", "Full valet SUV / double cab after the holidays", "Headlight restoration"],
-  "faq": [("How long is the drive from Knysna or Plett to RADC?", "Roughly 1 h 45 from Knysna and about 2 hours from Plettenberg Bay via George and the Outeniqua Pass."),
-          ("Can I get a quote before driving through?", f"Yes — WhatsApp photos of your vehicle to {B['phone_display']} and we'll quote before you book, so there are no surprises.")],
-},
-"klein-karoo": {
-  "title": "Car Detailing Klein Karoo | De Rust, Calitzdorp, Ladismith | RADC",
-  "desc": "Car detailing for the Klein Karoo: De Rust, Dysselsdorp, Calitzdorp, Ladismith & Uniondale. Ceramic coating, polishing, valets & headlight restoration at RADC Oudtshoorn.",
-  "intro": "Oudtshoorn is the hub of the Klein Karoo, which makes RADC the closest specialist detailer for De Rust, Dysselsdorp, Calitzdorp, Ladismith, Uniondale and the farms in between.",
-  "local": "Klein Karoo vehicles work hard: gravel farm roads, fine red dust, summer heat over 35 °C and intense UV. The result is faded paint, chalky plastics, yellow headlights and dust-packed interiors. A <a href=\"/services/car-valet-wash/\">full valet</a> takes care of the dust; a <a href=\"/services/headlight-restoration/\">headlight restoration</a> restores night visibility on dark country roads; and a <a href=\"/services/ceramic-coating/\">ceramic package</a> protects the paint from the sun.",
-  "plan": "Dysselsdorp is about 20 minutes away, De Rust about 30 minutes on the N12, Calitzdorp about 40 minutes on the R62, and Ladismith and Uniondale a little over an hour. Combine your drop-off with shopping or appointments in Oudtshoorn.",
-  "recommend": ["Full valet SUV / double cab – R1 399", "SUV 1-Step polish + 12-month-plus ceramic – R2 000", "Engine bay detailing – R150"],
-  "faq": [("Do you detail farm bakkies?", "Yes. Our SUV and double-cab packages are priced for bakkies, and an engine-bay detail is a popular add-on for vehicles used on gravel roads."),
-          ("Which towns in the Klein Karoo do you serve?", "Customers come from Oudtshoorn, Bongolethu, De Rust, Dysselsdorp, Calitzdorp, Ladismith, Van Wyksdorp, Uniondale and surrounding farms.")],
-},
-"central-karoo": {
-  "title": "Car Detailing Central Karoo | Prince Albert & Beaufort West | RADC",
-  "desc": "Prince Albert, Beaufort West & Laingsburg drivers: ceramic coating, paint correction, valets & headlight restoration at RADC Oudtshoorn — via Meiringspoort or Swartberg Pass.",
-  "intro": "There are few specialist detailers in the Central Karoo, so drivers from Prince Albert, Beaufort West and Laingsburg often make the trip south to RADC in Oudtshoorn.",
-  "local": "The Central Karoo has some of the harshest conditions in the country for paint: extreme summer heat, very high UV, long N1 and N12 kilometres and dusty gravel roads. Long-haul vehicles pick up bug splatter and tar that bake onto the paint. A <a href=\"/services/car-valet-wash/\">decon wash and clay bar</a>, followed by <a href=\"/services/paint-correction-polishing/\">polishing</a> and a <a href=\"/services/ceramic-coating/\">5-year ceramic coating</a>, is the most cost-effective way to keep a Karoo vehicle looking good for years.",
-  "plan": "From Prince Albert, drive through spectacular Meiringspoort on the N12 (tar) or over the Swartberg Pass (gravel — not ideal right before a detail!). From Beaufort West, the N12 south via Klaarstroom and Meiringspoort takes around 2 h 30 – 2 h 45. Book ahead on WhatsApp so your car can be done in one visit.",
-  "recommend": ["Decon wash & clay bar", "SUV 1-Step polish + 5-year ceramic – R5 500", "Headlight restoration for long night drives"],
-  "faq": [("How far is RADC from Prince Albert?", "About 75 km via the Swartberg Pass (gravel) or around 120 km via Meiringspoort on the tarred N12."),
-          ("Is it worth driving from Beaufort West?", "For one-day, long-lasting services like polishing and ceramic coating, yes — the protection lasts long after the trip. WhatsApp us first to confirm a date.")],
-},
-}
-
-def build_areas():
-    crumbs = [("/", "Home"), ("/areas/", "Areas we serve")]
-    cards = "".join(f'''<a class="card" href="/areas/{a["slug"]}/"><div class="icon">{ICONS["pin"]}</div><h3>{a["name"][0].upper() + a["name"][1:]}</h3>
-<p class="muted">{", ".join(a["places"])}</p><p class="small">{a["dist"]} · {a["time"]}</p><span class="more">Plan your visit →</span></a>''' for a in AREAS)
-    body = page_hero(crumbs, "Areas we serve", "Car Detailing across the Garden Route &amp; Karoo",
-        "RADC is based in Oudtshoorn — perfectly placed between the Garden Route coast, the Klein Karoo and the Central Karoo.")
-    body += f'''<section class="block"><div class="wrap">
-<div class="grid g3"><a class="card" href="/" style="border-color:#1d3b6b"><div class="icon">{ICONS["pin"]}</div><h3>Oudtshoorn</h3><p class="muted">Oudtshoorn, Bongolethu, Colridge View, Toekomsrus, Bridgton, West Bank</p><p class="small">Our home base</p><span class="more">Home page →</span></a>{cards}</div>
-</div></section>
-<section class="block alt"><div class="wrap split" style="align-items:start"><div>
-<h2>Why Oudtshoorn is the ideal hub</h2>
-<p>Oudtshoorn lies in the Garden Route District (previously the Eden District Municipality) at the heart of the Klein Karoo. Three mountain passes — Outeniqua, Robinson and Meiringspoort/Swartberg — link it to George, Mossel Bay and the Central Karoo, so most of the region is within an easy drive.</p>
-<p>Because services like <a href="/services/paint-correction-polishing/">paint correction</a> and <a href="/services/ceramic-coating/">ceramic coating</a> are long-lasting investments, one trip to RADC gives you months or years of results.</p></div>
-{FACTS}</div></section>{cta_band()}'''
-    render("/areas/", "Areas We Serve | Car Detailing Garden Route & Karoo | RADC",
-           "RADC in Oudtshoorn serves George, Mossel Bay, Knysna, Plett, De Rust, Calitzdorp, Ladismith, Prince Albert, Beaufort West and the wider Garden Route & Karoo.",
-           body, None, crumbs, priority="0.8")
-
-    for a in AREAS:
-        c = AREA_CONTENT[a["slug"]]
-        path = f'/areas/{a["slug"]}/'
-        disp = a["name"][0].upper() + a["name"][1:]
-        crumbs = [("/", "Home"), ("/areas/", "Areas we serve"), (path, disp)]
-        h1 = f'Car Detailing for {a["name"].replace("the ", "")} Drivers'
-        body = page_hero(crumbs, f'{a["region"]} · {a["dist"]} from Oudtshoorn', h1, c["intro"])
-        rec = "".join(f"<li>{esc(r)}</li>" for r in c["recommend"])
-        places = "".join(f"<li>{esc(p)}</li>" for p in a["places"])
-        body += f'''<section class="block"><div class="wrap split" style="align-items:start">
-<article>
-<h2>Paint care challenges in {a["name"].replace("the ", "the ")}</h2>
-<p>{c["local"]}</p>
-<h2>Planning your trip to RADC</h2>
-<p>{c["plan"]}</p>
-<div class="facts" style="margin:22px 0"><dl>
-<dt>Distance</dt><dd>{a["dist"]} to Oudtshoorn</dd>
-<dt>Drive time</dt><dd>{a["time"]}</dd>
-<dt>Route</dt><dd>{a["route"]}</dd>
-<dt>Our address</dt><dd>{B["street"]}, {B["suburb"]}, {B["city"]} {B["postcode"]}</dd>
-</dl></div>
-<p>Please WhatsApp us before you travel so we can confirm your quote and booking date — and ask whether any mobile or collection options are available for your area.</p>
-<h2>Popular with {a["name"].replace("the ", "")} customers</h2>
-<ul class="checklist">{rec}</ul>
-<p>See the <a href="/prices/">full price list</a> for every package.</p>
-</article>
-<aside><div class="card" style="position:sticky;top:90px"><h2 style="font-size:1.5rem">Towns covered</h2><ul class="area-list" style="columns:1">{places}</ul>
-<div class="btn-row">{btn_wa("WhatsApp for a quote")}<a class="btn btn-ghost" href="{B["maps"]}" target="_blank" rel="noopener">{ICONS["pin"]}Directions</a></div></div></aside>
-</div></section>
-<section class="block alt"><div class="wrap"><div class="section-head"><h2>Our services</h2></div><div class="grid g3">{service_cards()}</div></div></section>
-<section class="block"><div class="wrap">{faq_html(c["faq"])}</div></section>
-{cta_band(f"Driving in from {a['name'].replace('the ', '')}?")}'''
-        extra = [faq_schema(c["faq"]),
-                 {"@type": "Service", "name": f"Car detailing for {a['name'].replace('the ', '')}",
-                  "serviceType": "Car detailing", "provider": {"@id": BIZ_ID},
-                  "areaServed": [{"@type": "City", "name": p} for p in a["places"]]}]
-        render(path, c["title"], c["desc"], body, extra, crumbs, priority="0.7")
 
 # ---------------------------------------------------------------------------
 # ABOUT / CONTACT / 404
@@ -1009,7 +884,7 @@ def build_support():
       write("robots.txt", f"User-agent: *\nAllow: /\nDisallow: /tools/\n\n# AI search & answer engines are welcome\nUser-agent: GPTBot\nAllow: /\nUser-agent: OAI-SearchBot\nAllow: /\nUser-agent: ClaudeBot\nAllow: /\nUser-agent: PerplexityBot\nAllow: /\nUser-agent: Google-Extended\nAllow: /\n\nSitemap: {B['site']}/sitemap.xml\n")
     price_lines = "\n".join(f"- {n}: from {rand(p)}" for k in PRICES for n, _, p in PRICES[k])
     svc_lines = "\n".join(f"- [{s['nav']}]({B['site']}/services/{s['slug']}/): {s['teaser']}" for s in SERVICES)
-    area_lines = "\n".join(f"- [{a['name'][0].upper() + a['name'][1:]}]({B['site']}/areas/{a['slug']}/): {', '.join(a['places'])} ({a['dist']} from Oudtshoorn)" for a in AREAS)
+    area_lines = "\n".join(f"- {t}" for t in AREA_TEXT)
     write("llms.txt", f"""# {B['name']} (RADC)
 
 > Car detailing centre in Oudtshoorn, Western Cape, South Africa. Ceramic coating, 1- to 3-step paint correction, full valets, washes, headlight restoration, dent, scratch and rim repair and resprays. Serves Oudtshoorn, the Klein Karoo, the Garden Route (George, Mossel Bay, Knysna, Plettenberg Bay) and the Central Karoo (Prince Albert, Beaufort West).
@@ -1032,7 +907,7 @@ def build_support():
 {price_lines}
 
 ## Areas served
-- [Oudtshoorn]({B['site']}/): home base
+- Oudtshoorn (home base)
 {area_lines}
 
 ## Pages
@@ -1047,6 +922,6 @@ def build_support():
                   {"src": "assets/img/radc-logo-512.png", "sizes": "512x512", "type": "image/png"}]}, indent=2))
 
 if __name__ == "__main__":
-    build_home(); build_services(); build_prices(); build_areas(); build_about(); build_contact(); build_404()
+    build_home(); build_services(); build_prices(); build_about(); build_contact(); build_404()
     build_support()
     print(f"Built {len(PAGES)} indexable pages into {ROOT}")
