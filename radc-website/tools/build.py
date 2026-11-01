@@ -27,7 +27,7 @@ BUSINESS = {
     "street": "27 Heunis Street",
     "suburb": "Colridge View",
     "city": "Oudtshoorn",
-    "postcode": "6620",                         # Google shows 6620, WhatsApp shows 6625 - confirm
+    "postcode": "6620",                         # confirmed by client; update WhatsApp listing (shows 6625)
     "region": "Western Cape",
     "country": "ZA",
     "maps": "https://www.google.com/maps/search/?api=1&query=Ryall%27s+Auto+Detailing+Centre%2C+27+Heunis+St%2C+Oudtshoorn",
@@ -36,7 +36,10 @@ BUSINESS = {
     "facebook": "",                             # TODO: paste the Facebook page URL
     "rating": "5.0",
     "reviews": "13",
-    "hours_text": "Opens 8am Monday · bookings by WhatsApp",
+    "hours_text": "Mon–Sat 8am–5pm · Sunday closed",
+    "hours_days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "opens": "08:00",
+    "closes": "17:00",
 }
 B = BUSINESS
 WA_LINK = f"https://wa.me/{B['wa']}?text=" + "Hi%20RADC%2C%20I%27d%20like%20a%20quote%20for%20my%20car."
@@ -210,6 +213,8 @@ def business_schema():
                     "addressLocality": B["city"], "addressRegion": B["region"],
                     "postalCode": B["postcode"], "addressCountry": B["country"]},
         "hasMap": B["maps"],
+        "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": B["hours_days"],
+                                       "opens": B["opens"], "closes": B["closes"]}],
         "areaServed": area_served(),
         "knowsAbout": ["Car detailing", "Ceramic coating", "Paint correction", "Machine polishing",
                        "Headlight restoration", "Car valeting", "Dent repair", "Vehicle respray"],
@@ -396,6 +401,7 @@ FACTS = f'''<div class="facts"><h2 style="font-size:1.4rem">RADC at a glance</h2
 <dt>Business</dt><dd>{B["name"]} (RADC)</dd>
 <dt>What we do</dt><dd>Car detailing, ceramic coating, paint correction, valets, headlight restoration, dent &amp; scratch repair, resprays</dd>
 <dt>Address</dt><dd>{B["street"]}, {B["suburb"]}, {B["city"]}, {B["postcode"]}</dd>
+<dt>Hours</dt><dd>{B["hours_text"]}</dd>
 <dt>Phone / WhatsApp</dt><dd><a href="tel:{B["phone_e164"]}">{B["phone_display"]}</a></dd>
 <dt>Prices</dt><dd>From R130 (wash &amp; vacuum) to R6 000 (SUV 5-year ceramic package)</dd>
 <dt>Google rating</dt><dd>{B["rating"]} ★ from {B["reviews"]} reviews</dd>
@@ -1000,6 +1006,7 @@ def build_support():
 - Email: {B['email']}
 - Owner: Ryall Wagenaar
 - Google rating: {B['rating']} stars ({B['reviews']} reviews)
+- Hours: {B['hours_text']}
 - Bookings: via WhatsApp
 
 ## Services

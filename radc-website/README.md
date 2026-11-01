@@ -21,7 +21,7 @@ python3 tools/prepare_images.py <photo_dir>   # only when replacing source photo
 
 ## Before launch – TODO
 1. Set `site` in `tools/build.py` to the live domain, then rebuild (canonicals, schema and sitemap all use it).
-2. Confirm the postcode (Google shows 6620; WhatsApp shows 6625) and make all listings match.
-3. Add trading hours and the Facebook page URL.
+2. Change the WhatsApp Business address postcode from 6625 to 6620 so it matches Google and the site.
+3. Add the Facebook page URL.
 4. Replace the Maps search link with the Google Business Profile share link.
 5. Deploy the `radc-website` folder to Netlify, Cloudflare Pages or GitHub Pages; add the site to Search Console and submit `sitemap.xml`.
